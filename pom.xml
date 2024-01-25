@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>groupId</groupId>
+    <artifactId>MoneyTransfer</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>9</maven.compiler.source>
+        <maven.compiler.target>9</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.9.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.qmetric/spark-authentication -->
+        <dependency>
+            <groupId>com.qmetric</groupId>
+            <artifactId>spark-authentication</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>3.19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta</artifactId>
+            <version>3.19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+            <version>3.19.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.1</version>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+    <plugins>
+        <plugin>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen-maven</artifactId>
+            <version>3.19.3</version>
+
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                    <version>9.4.1212</version>
+                </dependency>
+            </dependencies>
+
+            <configuration>
+
+                <!-- JDBC connection parameters -->
+                <jdbc>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql:MoneyTransfer</url>
+                    <user>postgres</user>
+                    <password>1111</password>
+                </jdbc>
+
+                <!-- Generator parameters -->
+                <generator>
+                    <database>
+                        <name>org.jooq.meta.postgres.PostgresDatabase</name>
+                        <properties>
+                            <property>
+                                <key>dialect</key>
+                                <value>POSTGRESQL</value>
+                            </property>
+                            <property>
+                                <key>xmlFile</key>
+                                <value>src/main/resources/library.xml</value>
+                            </property>
+                        </properties>
+                        <includes>.*</includes>
+                        <excludes></excludes>
+                        <inputSchema>public</inputSchema>
+                    </database>
+                    <target>
+                        <packageName>generated</packageName>
+                        <directory>src/main/java/orr/jooq</directory>
+                    </target>
+                </generator>
+            </configuration>
+
+
+        </plugin>
+    </plugins>
+    </build>
+
+</project>

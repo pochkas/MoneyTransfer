@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuration>
+    <!-- Configure the database connection here -->
+    <jdbc>
+        <driver>com.postgresql.cj.jdbc.Driver</driver>
+        <url>jdbc:postgresql://localhost:5432/library</url>
+        <user>postgres</user>
+        <password>1111</password>
+    </jdbc>
+
+    <generator>
+
+        <name>org.jooq.codegen.JavaGenerator</name>
+
+        <database>
+
+            <name>org.jooq.meta.postgres.PostgresDatabase</name>
+
+            <inputSchema>library</inputSchema>
+
+            <includes>.*</includes>
+
+            <excludes></excludes>
+        </database>
+
+<!--        <target>-->
+
+<!--            <packageName>test.generated</packageName>-->
+
+<!--            <directory>src/main/java/orr/generated</directory>-->
+<!--        </target>-->
+    </generator>
+</configuration>
