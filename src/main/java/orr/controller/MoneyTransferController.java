@@ -22,7 +22,7 @@ public class MoneyTransferController {
             double amount = Double.parseDouble(req.queryParams("amount"));
             res.status(200);
 
-            moneyTransferService.performTransaction(fromAccountNumber, toAccountNumber, amount);
+            MoneyTransfer moneyTransfer = moneyTransferService.performTransaction(fromAccountNumber, toAccountNumber, amount);
 
             return amount;
         }, json());

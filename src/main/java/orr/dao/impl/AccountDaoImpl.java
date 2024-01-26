@@ -1,24 +1,16 @@
 package orr.dao.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import org.jooq.DSLContext;
-import orr.adapter.LocalDateTypeAdapter;
 import orr.dao.AccountDao;
 import orr.dto.AccountDto;
 import orr.exception.AccountNotFoundException;
 import orr.models.Account;
-import orr.models.User;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
 import static generated.tables.Account.ACCOUNT;
-import static generated.tables.User.USER;
 
 public class AccountDaoImpl implements AccountDao {
 

@@ -3,6 +3,7 @@ package orr.dao.impl;
 import com.google.inject.Inject;
 import org.jooq.DSLContext;
 import orr.dao.MoneyTransferDao;
+import orr.exception.MoneyTransferException;
 import orr.models.Account;
 import orr.models.MoneyTransfer;
 
@@ -49,25 +50,27 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
 
         Account accountFrom = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(fromAccountNumber)).fetchOneInto(Account.class);
         Account accountTo = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(toAccountNumber)).fetchOneInto(Account.class);
-        assert accountFrom != null;
 
-        context.transaction(transaction -> {
-
-            transaction.dsl()
-                    .update(ACCOUNT)
-                    .set(ACCOUNT.BALANCE, accountFrom.getBalance() - amount)
-                    .where(ACCOUNT.ACCOUNTNUMBER.eq(fromAccountNumber))
-                    .execute();
-
-            assert accountTo != null;
-            transaction.dsl()
-                    .update(ACCOUNT)
-                    .set(ACCOUNT.BALANCE, accountTo.getBalance() + amount)
-                    .where(ACCOUNT.ACCOUNTNUMBER.eq(toAccountNumber))
-                    .execute();
-        });
         MoneyTransfer moneyTransfer = new MoneyTransfer(fromAccountNumber, toAccountNumber, amount);
-        add(moneyTransfer);
+        try {
+            context.transaction(transaction -> {
+
+                transaction.dsl()
+                        .update(ACCOUNT)
+                        .set(ACCOUNT.BALANCE, accountFrom.getBalance() - amount)
+                        .where(ACCOUNT.ACCOUNTNUMBER.eq(fromAccountNumber))
+                        .execute();
+
+                transaction.dsl()
+                        .update(ACCOUNT)
+                        .set(ACCOUNT.BALANCE, accountTo.getBalance() + amount)
+                        .where(ACCOUNT.ACCOUNTNUMBER.eq(toAccountNumber))
+                        .execute();
+            });
+            add(moneyTransfer);
+        } catch (Exception exception) {
+            throw new MoneyTransferException();
+        }
         return moneyTransfer;
     }
 }
