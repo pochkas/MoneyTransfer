@@ -8,10 +8,14 @@ import generated.Keys;
 import generated.Public;
 import generated.tables.records.MoneytransferRecord;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import org.jooq.Check;
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
@@ -24,6 +28,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -52,7 +57,7 @@ public class Moneytransfer extends TableImpl<MoneytransferRecord> {
     /**
      * The column <code>public.moneyTransfer.id</code>.
      */
-    public final TableField<MoneytransferRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MoneytransferRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.moneyTransfer.fromAccountNumber</code>.
@@ -104,8 +109,20 @@ public class Moneytransfer extends TableImpl<MoneytransferRecord> {
     }
 
     @Override
+    public Identity<MoneytransferRecord, Long> getIdentity() {
+        return (Identity<MoneytransferRecord, Long>) super.getIdentity();
+    }
+
+    @Override
     public UniqueKey<MoneytransferRecord> getPrimaryKey() {
         return Keys.MONEYTRANSFER_PKEY;
+    }
+
+    @Override
+    public List<Check<MoneytransferRecord>> getChecks() {
+        return Arrays.asList(
+            Internal.createCheck(this, DSL.name("amountCheck"), "((amount >= (0)::double precision))", true)
+        );
     }
 
     @Override

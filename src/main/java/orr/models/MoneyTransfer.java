@@ -7,6 +7,19 @@ public class MoneyTransfer {
     private Long toAccountNumber;
     private double amount;
 
+    public MoneyTransfer(Long fromAccountNumber, Long toAccountNumber, double amount) {
+        this.fromAccountNumber = fromAccountNumber;
+        this.toAccountNumber = toAccountNumber;
+        this.amount = amount;
+    }
+
+    public MoneyTransfer(Long id, Long fromAccountNumber, Long toAccountNumber, double amount) {
+        this.id = id;
+        this.fromAccountNumber = fromAccountNumber;
+        this.toAccountNumber = toAccountNumber;
+        this.amount = amount;
+    }
+
     public Long getId() {
         return id;
     }
@@ -36,13 +49,6 @@ public class MoneyTransfer {
     }
 
     public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public MoneyTransfer(Long id, Long fromAccountNumber, Long toAccountNumber, double amount) {
-        this.id = id;
-        this.fromAccountNumber = fromAccountNumber;
-        this.toAccountNumber = toAccountNumber;
         this.amount = amount;
     }
 }
