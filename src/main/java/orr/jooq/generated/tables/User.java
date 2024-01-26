@@ -6,16 +6,21 @@ package generated.tables;
 
 import generated.Keys;
 import generated.Public;
+import generated.tables.Account.AccountPath;
 import generated.tables.records.UserRecord;
 
 import java.util.Collection;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -109,6 +114,37 @@ public class User extends TableImpl<UserRecord> {
         this(DSL.name("user"), null);
     }
 
+    public <O extends Record> User(Table<O> path, ForeignKey<O, UserRecord> childPath, InverseForeignKey<O, UserRecord> parentPath) {
+        super(path, childPath, parentPath, USER);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class UserPath extends User implements Path<UserRecord> {
+        public <O extends Record> UserPath(Table<O> path, ForeignKey<O, UserRecord> childPath, InverseForeignKey<O, UserRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private UserPath(Name alias, Table<UserRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public UserPath as(String alias) {
+            return new UserPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public UserPath as(Name alias) {
+            return new UserPath(alias, this);
+        }
+
+        @Override
+        public UserPath as(Table<?> alias) {
+            return new UserPath(alias.getQualifiedName(), this);
+        }
+    }
+
     @Override
     public Schema getSchema() {
         return aliased() ? null : Public.PUBLIC;
@@ -122,6 +158,19 @@ public class User extends TableImpl<UserRecord> {
     @Override
     public UniqueKey<UserRecord> getPrimaryKey() {
         return Keys.USER_PKEY;
+    }
+
+    private transient AccountPath _account;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.account</code>
+     * table
+     */
+    public AccountPath account() {
+        if (_account == null)
+            _account = new AccountPath(this, null, Keys.ACCOUNT__USERID_FKEY.getInverseKey());
+
+        return _account;
     }
 
     @Override

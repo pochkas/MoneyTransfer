@@ -1,21 +1,20 @@
 package orr.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Account {
 
     private Long id;
     private Long accountNumber;
-    private String accountHolderName;
     private double balance;
-    private LocalDateTime createdDate;
+    private Long userId;
 
-    public Account(Long accountNumber, Long accountHolderId, String accountHolderName, double currentBalance, LocalDateTime createdDate) {
+    public Account(Long accountNumber, Long accountHolderId, double currentBalance, Long userId) {
         this.accountNumber = accountNumber;
         this.id = accountHolderId;
-        this.accountHolderName = accountHolderName;
         this.balance = currentBalance;
-        this.createdDate = createdDate;
+        this.userId = userId;
     }
 
     public Long getAccountNumber() {
@@ -34,14 +33,6 @@ public class Account {
         this.id = id;
     }
 
-    public String getAccountHolderName() {
-        return accountHolderName;
-    }
-
-    public void setAccountHolderName(String accountHolderName) {
-        this.accountHolderName = accountHolderName;
-    }
-
     public double getBalance() {
         return balance;
     }
@@ -50,11 +41,7 @@ public class Account {
         this.balance = balance;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public Long getUserId() {
+        return userId;
     }
 }

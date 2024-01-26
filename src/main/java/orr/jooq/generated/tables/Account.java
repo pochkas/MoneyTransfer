@@ -4,18 +4,27 @@
 package generated.tables;
 
 
+import generated.Indexes;
 import generated.Keys;
 import generated.Public;
+import generated.tables.User.UserPath;
 import generated.tables.records.AccountRecord;
 
-import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
+import org.jooq.Identity;
+import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -53,7 +62,7 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.id</code>.
      */
-    public final TableField<AccountRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<AccountRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.account.accountNumber</code>.
@@ -61,19 +70,14 @@ public class Account extends TableImpl<AccountRecord> {
     public final TableField<AccountRecord, Long> ACCOUNTNUMBER = createField(DSL.name("accountNumber"), SQLDataType.BIGINT, this, "");
 
     /**
-     * The column <code>public.account.accountHolderName</code>.
-     */
-    public final TableField<AccountRecord, String> ACCOUNTHOLDERNAME = createField(DSL.name("accountHolderName"), SQLDataType.VARCHAR, this, "");
-
-    /**
      * The column <code>public.account.balance</code>.
      */
     public final TableField<AccountRecord, Double> BALANCE = createField(DSL.name("balance"), SQLDataType.DOUBLE, this, "");
 
     /**
-     * The column <code>public.account.createdDate</code>.
+     * The column <code>public.account.userId</code>.
      */
-    public final TableField<AccountRecord, LocalDate> CREATEDDATE = createField(DSL.name("createdDate"), SQLDataType.LOCALDATE, this, "");
+    public final TableField<AccountRecord, Long> USERID = createField(DSL.name("userId"), SQLDataType.BIGINT.nullable(false), this, "");
 
     private Account(Name alias, Table<AccountRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -104,14 +108,72 @@ public class Account extends TableImpl<AccountRecord> {
         this(DSL.name("account"), null);
     }
 
+    public <O extends Record> Account(Table<O> path, ForeignKey<O, AccountRecord> childPath, InverseForeignKey<O, AccountRecord> parentPath) {
+        super(path, childPath, parentPath, ACCOUNT);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class AccountPath extends Account implements Path<AccountRecord> {
+        public <O extends Record> AccountPath(Table<O> path, ForeignKey<O, AccountRecord> childPath, InverseForeignKey<O, AccountRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private AccountPath(Name alias, Table<AccountRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public AccountPath as(String alias) {
+            return new AccountPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public AccountPath as(Name alias) {
+            return new AccountPath(alias, this);
+        }
+
+        @Override
+        public AccountPath as(Table<?> alias) {
+            return new AccountPath(alias.getQualifiedName(), this);
+        }
+    }
+
     @Override
     public Schema getSchema() {
         return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.FKI_USERID_FKEY);
+    }
+
+    @Override
+    public Identity<AccountRecord, Long> getIdentity() {
+        return (Identity<AccountRecord, Long>) super.getIdentity();
+    }
+
+    @Override
     public UniqueKey<AccountRecord> getPrimaryKey() {
         return Keys.ACCOUNT_PKEY;
+    }
+
+    @Override
+    public List<ForeignKey<AccountRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.ACCOUNT__USERID_FKEY);
+    }
+
+    private transient UserPath _user;
+
+    /**
+     * Get the implicit join path to the <code>public.user</code> table.
+     */
+    public UserPath user() {
+        if (_user == null)
+            _user = new UserPath(this, Keys.ACCOUNT__USERID_FKEY, null);
+
+        return _user;
     }
 
     @Override

@@ -11,6 +11,7 @@ import generated.tables.records.AccountRecord;
 import generated.tables.records.MoneytransferRecord;
 import generated.tables.records.UserRecord;
 
+import org.jooq.ForeignKey;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
@@ -31,4 +32,10 @@ public class Keys {
     public static final UniqueKey<AccountRecord> ACCOUNT_PKEY = Internal.createUniqueKey(Account.ACCOUNT, DSL.name("account_pkey"), new TableField[] { Account.ACCOUNT.ID }, true);
     public static final UniqueKey<MoneytransferRecord> MONEYTRANSFER_PKEY = Internal.createUniqueKey(Moneytransfer.MONEYTRANSFER, DSL.name("moneyTransfer_pkey"), new TableField[] { Moneytransfer.MONEYTRANSFER.ID }, true);
     public static final UniqueKey<UserRecord> USER_PKEY = Internal.createUniqueKey(User.USER, DSL.name("user_pkey"), new TableField[] { User.USER.ID }, true);
+
+    // -------------------------------------------------------------------------
+    // FOREIGN KEY definitions
+    // -------------------------------------------------------------------------
+
+    public static final ForeignKey<AccountRecord, UserRecord> ACCOUNT__USERID_FKEY = Internal.createForeignKey(Account.ACCOUNT, DSL.name("userId_fkey"), new TableField[] { Account.ACCOUNT.USERID }, Keys.USER_PKEY, new TableField[] { User.USER.ID }, true);
 }

@@ -6,8 +6,6 @@ package generated.tables.records;
 
 import generated.tables.Account;
 
-import java.time.LocalDate;
-
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
 
@@ -49,45 +47,31 @@ public class AccountRecord extends UpdatableRecordImpl<AccountRecord> {
     }
 
     /**
-     * Setter for <code>public.account.accountHolderName</code>.
-     */
-    public void setAccountholdername(String value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>public.account.accountHolderName</code>.
-     */
-    public String getAccountholdername() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>public.account.balance</code>.
      */
     public void setBalance(Double value) {
-        set(3, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>public.account.balance</code>.
      */
     public Double getBalance() {
-        return (Double) get(3);
+        return (Double) get(2);
     }
 
     /**
-     * Setter for <code>public.account.createdDate</code>.
+     * Setter for <code>public.account.userId</code>.
      */
-    public void setCreateddate(LocalDate value) {
-        set(4, value);
+    public void setUserid(Long value) {
+        set(3, value);
     }
 
     /**
-     * Getter for <code>public.account.createdDate</code>.
+     * Getter for <code>public.account.userId</code>.
      */
-    public LocalDate getCreateddate() {
-        return (LocalDate) get(4);
+    public Long getUserid() {
+        return (Long) get(3);
     }
 
     // -------------------------------------------------------------------------
@@ -113,14 +97,13 @@ public class AccountRecord extends UpdatableRecordImpl<AccountRecord> {
     /**
      * Create a detached, initialised AccountRecord
      */
-    public AccountRecord(Long id, Long accountnumber, String accountholdername, Double balance, LocalDate createddate) {
+    public AccountRecord(Long id, Long accountnumber, Double balance, Long userid) {
         super(Account.ACCOUNT);
 
         setId(id);
         setAccountnumber(accountnumber);
-        setAccountholdername(accountholdername);
         setBalance(balance);
-        setCreateddate(createddate);
+        setUserid(userid);
         resetChangedOnNotNull();
     }
 }

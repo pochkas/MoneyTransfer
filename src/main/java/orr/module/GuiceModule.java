@@ -11,8 +11,6 @@ import org.jooq.SQLDialectCategory;
 import org.jooq.impl.*;
 import org.postgresql.ds.PGSimpleDataSource;
 import orr.MoneyTransferApplication;
-import org.jooq.*;
-import org.jooq.impl.*;
 
 public class GuiceModule extends AbstractModule {
 
@@ -48,13 +46,7 @@ public class GuiceModule extends AbstractModule {
                 .set(SQLDialectCategory.POSTGRES.dialects().stream().findFirst().get())
                 .set(cp)
                 .set(new ThreadLocalTransactionProvider(cp, true));
-        //spark.sql.dialect=PostgreSQL
-
        SQLDialectCategory.POSTGRES.dialects().stream().findFirst().get();
-//        category.name("PostgreSQL");
-//        configuration.set()
         return configuration;
     }
-
-
 }
