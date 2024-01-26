@@ -44,7 +44,8 @@ public class UserController {
 
         put("/users/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            if (!userService.findById(id).isPresent()) {
+            Optional<User> user = userService.findById(id);
+            if (user.isPresent()) {
                 res.status(400);
                 return new ResponseError("No user with id '%s' found", String.valueOf(id));
             }
@@ -65,8 +66,8 @@ public class UserController {
         }, json());
 
         delete("/users/:id", (req, res) -> {
-            Long id = Long.valueOf(req.params(":id"));
-            if (!userService.findById(id).isPresent()) {
+            Long id = Long.valueOf(req.params(":id"));Optional<User> user = userService.findById(id);
+            if (user.isPresent()) {
                 return new ResponseError("No user with id '%s' found", String.valueOf(id));
             }
             userService.delete(id);

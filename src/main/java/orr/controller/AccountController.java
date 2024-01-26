@@ -59,7 +59,8 @@ public class AccountController {
 
         put("/accounts/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            if (!accountService.findById(id).isPresent()) {
+            Optional<Account> account = accountService.findById(id);
+            if (!account.isPresent()) {
                 res.status(400);
                 return new ResponseError("No account with id '%s' found", String.valueOf(id));
             }
@@ -72,7 +73,8 @@ public class AccountController {
 
         delete("/accounts/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            if (!accountService.findById(id).isPresent()) {
+            Optional<Account> account = accountService.findById(id);
+            if (!account.isPresent()) {
                 res.status(400);
                 return new ResponseError("No account with id '%s' found", String.valueOf(id));
             }

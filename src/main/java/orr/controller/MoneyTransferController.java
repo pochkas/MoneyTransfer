@@ -1,15 +1,9 @@
 package orr.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
-import orr.dto.AccountDto;
 import orr.errors.ResponseError;
-import orr.models.Account;
 import orr.models.MoneyTransfer;
-import orr.service.Impl.AccountServiceImpl;
 import orr.service.Impl.MoneyTransferServiceImpl;
-import orr.service.MoneyTransferService;
 
 import java.util.Optional;
 
@@ -28,14 +22,14 @@ public class MoneyTransferController {
             double amount = Double.parseDouble(req.queryParams("amount"));
             res.status(200);
 
-            moneyTransferService.createTransaction(fromAccountNumber, toAccountNumber, amount);
+            moneyTransferService.performTransaction(fromAccountNumber, toAccountNumber, amount);
 
             return amount;
         }, json());
 
         get("/moneyTransfers", (req, res) -> moneyTransferService.getAll(), json());
 
-        get("/moneyTransfers/:id", (req, res) -> {
+        get("/moneyTransfer/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
             Optional<MoneyTransfer> moneyTransfer = moneyTransferService.findById(id);
             if (!moneyTransfer.isPresent()) {

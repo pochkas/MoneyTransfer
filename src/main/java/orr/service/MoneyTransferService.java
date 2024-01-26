@@ -11,5 +11,5 @@ public interface MoneyTransferService {
     Optional<MoneyTransfer> findById(Long id);
     MoneyTransfer getById(Long id);
     MoneyTransfer add(MoneyTransfer moneyTransfer);
-    void createTransaction(Long fromAccountNumber, Long toAccountNumber, double amount);
+    MoneyTransfer performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount);
 }

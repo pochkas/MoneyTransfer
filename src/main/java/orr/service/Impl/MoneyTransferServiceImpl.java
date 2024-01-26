@@ -19,26 +19,26 @@ public class MoneyTransferServiceImpl implements MoneyTransferService {
 
     @Override
     public Collection<MoneyTransfer> getAll() {
-        return null;
+        return moneyTransferDao.getAll();
     }
 
     @Override
     public Optional<MoneyTransfer> findById(Long id) {
-        return Optional.empty();
+        return moneyTransferDao.findById(id);
     }
 
     @Override
     public MoneyTransfer getById(Long id) {
-        return null;
+        return moneyTransferDao.getById(id);
     }
 
     @Override
     public MoneyTransfer add(MoneyTransfer moneyTransfer) {
-        return null;
+        return moneyTransferDao.add(moneyTransfer);
     }
 
     @Override
-    public void createTransaction(Long fromAccountNumber, Long toAccountNumber, double amount) {
-        moneyTransferDao.performTransaction(fromAccountNumber, toAccountNumber, amount);
+    public MoneyTransfer performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount) {
+       return moneyTransferDao.performTransaction(fromAccountNumber, toAccountNumber, amount);
     }
 }

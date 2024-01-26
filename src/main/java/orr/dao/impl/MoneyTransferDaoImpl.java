@@ -3,8 +3,6 @@ package orr.dao.impl;
 import com.google.inject.Inject;
 import org.jooq.DSLContext;
 import orr.dao.MoneyTransferDao;
-import orr.exception.AccountNotFoundException;
-import orr.exception.MoneyTransferException;
 import orr.models.Account;
 import orr.models.MoneyTransfer;
 
@@ -13,7 +11,6 @@ import java.util.Optional;
 
 import static generated.tables.Account.ACCOUNT;
 import static generated.tables.Moneytransfer.MONEYTRANSFER;
-import static generated.tables.User.USER;
 
 public class MoneyTransferDaoImpl implements MoneyTransferDao {
 
@@ -48,7 +45,7 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
     }
 
     @Override
-    public void performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount) {
+    public MoneyTransfer performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount) {
 
         Account accountFrom = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(fromAccountNumber)).fetchOneInto(Account.class);
         Account accountTo = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(toAccountNumber)).fetchOneInto(Account.class);
@@ -69,6 +66,8 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
                     .where(ACCOUNT.ACCOUNTNUMBER.eq(toAccountNumber))
                     .execute();
         });
-        add(new MoneyTransfer(fromAccountNumber, toAccountNumber, amount));
+        MoneyTransfer moneyTransfer = new MoneyTransfer(fromAccountNumber, toAccountNumber, amount);
+        add(moneyTransfer);
+        return moneyTransfer;
     }
 }
