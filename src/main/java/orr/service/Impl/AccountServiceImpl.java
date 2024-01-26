@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import orr.dao.impl.AccountDaoImpl;
 import orr.dto.AccountDto;
 import orr.models.Account;
-import orr.models.User;
 import orr.service.AccountService;
 
 import java.util.Collection;
@@ -47,5 +46,15 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account add(Long userId, Account account) {
         return accountDao.add(userId, account);
+    }
+
+    @Override
+    public Optional<Account> findByAccountNumber(Long accountNumberId) {
+        return accountDao.findByAccountNumber(accountNumberId);
+    }
+
+    @Override
+    public Account getByAccountNumber(Long accountNumberId) {
+        return accountDao.findByAccountNumber(accountNumberId).get();
     }
 }

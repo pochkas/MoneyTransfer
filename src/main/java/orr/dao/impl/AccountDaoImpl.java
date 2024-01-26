@@ -46,6 +46,17 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
+    public Optional<Account> findByAccountNumber(Long accountNumber) {
+        Account account = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(accountNumber)).fetchOneInto(Account.class);
+        return Optional.ofNullable(account);
+    }
+
+    @Override
+    public Account getByAccountNumber(Long accountNumber) {
+        return findByAccountNumber(accountNumber).orElseThrow(AccountNotFoundException::new);
+    }
+
+    @Override
     public Account update(Long id, AccountDto accountDto) {
 
         context.update(ACCOUNT)

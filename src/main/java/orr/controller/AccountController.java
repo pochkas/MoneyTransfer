@@ -3,18 +3,11 @@ package orr.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
-import orr.adapter.LocalDateTypeAdapter;
 import orr.dto.AccountDto;
 import orr.errors.ResponseError;
-import orr.exception.AccountNotFoundException;
 import orr.models.Account;
-import orr.models.User;
 import orr.service.Impl.AccountServiceImpl;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.Optional;
 
 import static orr.utils.JsonUtil.json;
@@ -35,6 +28,17 @@ public class AccountController {
                 return new ResponseError("No account with id '%s' found", String.valueOf(id));
             }
 
+            res.status(200);
+            return account.get();
+        }, json());
+
+        get("/account", (req, res) -> {
+            Long id = Long.valueOf(req.queryParams("accountNumber"));
+            Optional<Account> account = accountService.findByAccountNumber(id);
+            if (!account.isPresent()) {
+                res.status(400);
+                return new ResponseError("No account with id '%s' found", String.valueOf(id));
+            }
             res.status(200);
             return account.get();
         }, json());

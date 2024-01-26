@@ -11,6 +11,8 @@ public interface AccountDao {
     Collection<Account> getAll();
     Optional<Account> findById(Long id);
     Account getById(Long id);
+    Optional<Account> findByAccountNumber(Long accountNumber);
+    Account getByAccountNumber(Long accountNumber);
     Account update(Long id, AccountDto accountDto);
     void delete(Long id);
     Account add(Long userId, Account account);
