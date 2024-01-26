@@ -1,18 +1,14 @@
 package orr.models;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 public class Account {
-
     private Long id;
     private Long accountNumber;
     private double balance;
     private Long userId;
 
-    public Account(Long accountNumber, Long accountHolderId, double currentBalance, Long userId) {
+    public Account(Long id, Long accountNumber, double currentBalance, Long userId) {
+        this.id = id;
         this.accountNumber = accountNumber;
-        this.id = accountHolderId;
         this.balance = currentBalance;
         this.userId = userId;
     }
@@ -43,5 +39,15 @@ public class Account {
 
     public Long getUserId() {
         return userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", accountNumber=" + accountNumber +
+                ", balance=" + balance +
+                ", userId=" + userId +
+                '}';
     }
 }

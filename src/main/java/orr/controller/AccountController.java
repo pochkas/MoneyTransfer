@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Optional;
 
 import static orr.utils.JsonUtil.json;
 import static orr.utils.JsonUtil.toJson;
@@ -28,14 +29,14 @@ public class AccountController {
 
         get("/accounts/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-
-            if (!accountService.findById(id).isPresent()) {
+            Optional<Account> account = accountService.findById(id);
+            if (!account.isPresent()) {
                 res.status(400);
                 return new ResponseError("No account with id '%s' found", String.valueOf(id));
             }
 
             res.status(200);
-            return accountService.getById(id);
+            return account.get();
         }, json());
 
         post("/accounts/:userId", (req, res) -> {
@@ -74,12 +75,6 @@ public class AccountController {
             accountService.delete(id);
             res.status(200);
             return "Account was deleted.";
-        }, json());
-
-        get("/accounts/user/:id", (req, res) -> {
-            Long userId = Long.valueOf(":id");
-            res.status(200);
-            return accountService.getByUserId(userId);
         }, json());
 
         after((req, res) -> {

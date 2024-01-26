@@ -62,12 +62,6 @@ public class AccountDaoImpl implements AccountDao {
                 .values(uniqueLong, account.getBalance(), userId).execute();
         return account;
     }
-
-    @Override
-    public User getByUserId(Long userId) {
-        return context.select().from(USER).where(ACCOUNT.USERID.eq(userId)).fetchOneInto(User.class);
-    }
-
     @Override
     public void delete(Long id) {
         context.delete(ACCOUNT).where(ACCOUNT.ID.eq(id)).execute();

@@ -48,9 +48,4 @@ public class AccountServiceImpl implements AccountService {
     public Account add(Long userId, Account account) {
         return accountDao.add(userId, account);
     }
-
-    @Override
-    public User getByUserId(Long userId) {
-        return accountDao.getByUserId(userId);
-    }
 }
