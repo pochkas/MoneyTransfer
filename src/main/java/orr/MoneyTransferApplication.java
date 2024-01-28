@@ -20,16 +20,6 @@ public class MoneyTransferApplication {
         this.moneyTransferController = moneyTransferController;
     }
 
-//    void run(final int port) {
-//        //port(port);
-//        before(new BasicAuthenticationFilter("/path/*", new AuthenticationDetails("user", "password")));
-//        before("/*", (request, response) -> String.format("%s: %s", request.requestMethod(), request.uri()));
-//
-//        get("/", (request, response) -> "Hello");
-//
-//        after("/*", (request, response) -> response.body());
-//    }
-
     public static void main(String[] args) {
         Guice.createInjector(new GuiceModule()).getInstance(MoneyTransferApplication.class);
     }

@@ -23,7 +23,7 @@ public class AccountController {
 
         get("/accounts/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            return accountService.findById(id).get();
+            return accountService.getById(id);
         }, json());
 
         get("/account", (req, res) -> {
