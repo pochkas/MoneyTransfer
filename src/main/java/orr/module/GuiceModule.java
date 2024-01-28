@@ -11,12 +11,14 @@ import org.jooq.SQLDialectCategory;
 import org.jooq.impl.*;
 import org.postgresql.ds.PGSimpleDataSource;
 import orr.MoneyTransferApplication;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class GuiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
-
         bind(MoneyTransferApplication.class).in(Singleton.class);
     }
 
@@ -34,12 +36,14 @@ public class GuiceModule extends AbstractModule {
 
     @Provides
     @Singleton
-    private Configuration providedConfiguration() {
+    private Configuration providedConfiguration() throws IOException {
+
+        Properties properties = getProperties();
 
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         dataSource.setURL("jdbc:postgresql:MoneyTransfer");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("1111");
+        dataSource.setUser(properties.getProperty("user"));
+        dataSource.setPassword(properties.getProperty("password"));
 
         ConnectionProvider cp = new DataSourceConnectionProvider(dataSource);
         Configuration configuration = new DefaultConfiguration()
@@ -48,5 +52,13 @@ public class GuiceModule extends AbstractModule {
                 .set(new ThreadLocalTransactionProvider(cp, true));
        SQLDialectCategory.POSTGRES.dialects().stream().findFirst().get();
         return configuration;
+    }
+
+    public Properties getProperties() throws IOException {
+        String rootPath = Thread.currentThread().getContextClassLoader().getResource("secret.properties").getPath();
+
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(rootPath));
+        return properties;
     }
 }
