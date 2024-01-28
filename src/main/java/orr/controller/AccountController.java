@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import orr.dto.AccountDto;
 import orr.errors.ResponseError;
+import orr.exception.UserFacingException;
 import orr.models.Account;
 import orr.service.Impl.AccountServiceImpl;
 
@@ -22,30 +23,16 @@ public class AccountController {
 
         get("/accounts/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            Optional<Account> account = accountService.findById(id);
-            if (!account.isPresent()) {
-                res.status(400);
-                return new ResponseError("No account with id '%s' found", String.valueOf(id));
-            }
-
-            res.status(200);
-            return account.get();
+            return accountService.findById(id).get();
         }, json());
 
         get("/account", (req, res) -> {
             Long id = Long.valueOf(req.queryParams("accountNumber"));
-            Optional<Account> account = accountService.findByAccountNumber(id);
-            if (!account.isPresent()) {
-                res.status(400);
-                return new ResponseError("No account with id '%s' found", String.valueOf(id));
-            }
-            res.status(200);
-            return account.get();
+            return accountService.findByAccountNumber(id).get();
         }, json());
 
         post("/accounts/:userId", (req, res) -> {
             Long userId = Long.valueOf(req.params(":userId"));
-
             String request = "" + req.body();
             Gson gson = new GsonBuilder().create();
             Account account = gson.fromJson(request, Account.class);
@@ -59,35 +46,24 @@ public class AccountController {
 
         put("/accounts/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            Optional<Account> account = accountService.findById(id);
-            if (!account.isPresent()) {
-                res.status(400);
-                return new ResponseError("No account with id '%s' found", String.valueOf(id));
-            }
+            accountService.findById(id);
             String request = "" + req.body();
             Gson gson = new GsonBuilder().create();
             AccountDto accountDto = gson.fromJson(request, AccountDto.class);
-            res.status(200);
             return accountService.update(id, accountDto);
         }, json());
 
         delete("/accounts/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            Optional<Account> account = accountService.findById(id);
-            if (!account.isPresent()) {
-                res.status(400);
-                return new ResponseError("No account with id '%s' found", String.valueOf(id));
-            }
             accountService.delete(id);
-            res.status(200);
-            return "Account was deleted.";
+            return "Account with id "+id+"was deleted.";
         }, json());
 
         after((req, res) -> {
             res.type("application/json");
         });
 
-        exception(IllegalArgumentException.class, (e, req, res) -> {
+        exception(UserFacingException.class, (e, req, res) -> {
             res.status(400);
             res.body(toJson(new ResponseError(e)));
         });

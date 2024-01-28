@@ -2,8 +2,11 @@ package orr.controller;
 
 import com.google.inject.Inject;
 import orr.errors.ResponseError;
+import orr.exception.MoneyTransferException;
+import orr.exception.UserFacingException;
 import orr.models.MoneyTransfer;
 import orr.service.Impl.MoneyTransferServiceImpl;
+import orr.service.MoneyTransferService;
 
 import java.util.Optional;
 
@@ -22,29 +25,23 @@ public class MoneyTransferController {
             double amount = Double.parseDouble(req.queryParams("amount"));
             res.status(200);
 
-            MoneyTransfer moneyTransfer = moneyTransferService.performTransaction(fromAccountNumber, toAccountNumber, amount);
+            moneyTransferService.performTransaction(fromAccountNumber, toAccountNumber, amount);
 
-            return amount;
+            return "-"+amount;
         }, json());
 
         get("/moneyTransfers", (req, res) -> moneyTransferService.getAll(), json());
 
-        get("/moneyTransfer/:id", (req, res) -> {
+        get("/moneyTransfers/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            Optional<MoneyTransfer> moneyTransfer = moneyTransferService.findById(id);
-            if (!moneyTransfer.isPresent()) {
-                res.status(400);
-                return new ResponseError("No moneyTransfer with id '%s' found", String.valueOf(id));
-            }
-            res.status(200);
-            return moneyTransfer.get();
+            return moneyTransferService.getById(id);
         }, json());
 
         after((req, res) -> {
             res.type("application/json");
         });
 
-        exception(IllegalArgumentException.class, (e, req, res) -> {
+        exception(UserFacingException.class, (e, req, res) -> {
             res.status(400);
             res.body(toJson(new ResponseError(e)));
         });

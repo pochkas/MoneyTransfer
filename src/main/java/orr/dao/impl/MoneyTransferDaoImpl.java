@@ -3,6 +3,7 @@ package orr.dao.impl;
 import com.google.inject.Inject;
 import org.jooq.DSLContext;
 import orr.dao.MoneyTransferDao;
+import orr.exception.InsufficientFundsException;
 import orr.exception.MoneyTransferException;
 import orr.models.Account;
 import orr.models.MoneyTransfer;
@@ -29,7 +30,7 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
 
     @Override
     public Optional<MoneyTransfer> findById(Long id) {
-        MoneyTransfer moneyTransfer = context.select().from(MONEYTRANSFER).fetchOneInto(MoneyTransfer.class);
+        MoneyTransfer moneyTransfer = context.select().from(MONEYTRANSFER).where(MONEYTRANSFER.ID.eq(id)).fetchOneInto(MoneyTransfer.class);
         return Optional.ofNullable(moneyTransfer);
     }
 
@@ -69,7 +70,7 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
             });
             add(moneyTransfer);
         } catch (Exception exception) {
-            throw new MoneyTransferException();
+            throw new InsufficientFundsException();
         }
         return moneyTransfer;
     }

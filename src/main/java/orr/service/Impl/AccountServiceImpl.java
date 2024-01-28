@@ -3,6 +3,7 @@ package orr.service.Impl;
 import com.google.inject.Inject;
 import orr.dao.impl.AccountDaoImpl;
 import orr.dto.AccountDto;
+import orr.exception.AccountNotFoundException;
 import orr.models.Account;
 import orr.service.AccountService;
 
@@ -25,12 +26,16 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Optional<Account> findById(Long id) {
-        return accountDao.findById(id);
+        return Optional.ofNullable(accountDao.findById(id).orElseThrow(()-> new AccountNotFoundException(id)));
     }
 
     @Override
     public Account getById(Long id) {
-        return accountDao.getById(id);
+        try{
+            return accountDao.getById(id);
+        } catch (Exception exception){
+            throw new AccountNotFoundException(id);
+        }
     }
 
     @Override
@@ -40,7 +45,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void delete(Long id) {
-        accountDao.delete(id);
+
+        try {
+            accountDao.delete(id);
+        } catch (Exception exception){
+            throw new AccountNotFoundException(id);
+        }
     }
 
     @Override
@@ -50,7 +60,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Optional<Account> findByAccountNumber(Long accountNumberId) {
-        return accountDao.findByAccountNumber(accountNumberId);
+        try {
+            return accountDao.findByAccountNumber(accountNumberId);
+        } catch (Exception exception){
+            throw new AccountNotFoundException(accountNumberId);
+        }
     }
 
     @Override

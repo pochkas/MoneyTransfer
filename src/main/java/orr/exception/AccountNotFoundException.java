@@ -1,8 +1,8 @@
 package orr.exception;
 
-public class AccountNotFoundException extends RuntimeException{
+public class AccountNotFoundException extends UserFacingException {
 
-    public AccountNotFoundException(){
-        super("Account not found.");
+    public AccountNotFoundException(Long id) {
+        super("No account with with id " + id + " found.");
     }
 }

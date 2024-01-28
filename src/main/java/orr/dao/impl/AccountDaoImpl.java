@@ -6,6 +6,7 @@ import orr.dao.AccountDao;
 import orr.dto.AccountDto;
 import orr.exception.AccountNotFoundException;
 import orr.models.Account;
+
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,7 +35,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Account getById(Long id) {
-        return findById(id).orElseThrow(AccountNotFoundException::new);
+        return findById(id).orElseThrow(() -> new AccountNotFoundException(id));
     }
 
     @Override
@@ -45,7 +46,7 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public Account getByAccountNumber(Long accountNumber) {
-        return findByAccountNumber(accountNumber).orElseThrow(AccountNotFoundException::new);
+        return findByAccountNumber(accountNumber).orElseThrow(() -> new AccountNotFoundException(accountNumber));
     }
 
     @Override
@@ -58,6 +59,7 @@ public class AccountDaoImpl implements AccountDao {
 
         return getById(id);
     }
+
     @Override
     public Account add(Long userId, Account account) {
         long uniqueLong = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
@@ -65,6 +67,7 @@ public class AccountDaoImpl implements AccountDao {
                 .values(uniqueLong, account.getBalance(), userId).execute();
         return account;
     }
+
     @Override
     public void delete(Long id) {
         context.delete(ACCOUNT).where(ACCOUNT.ID.eq(id)).execute();

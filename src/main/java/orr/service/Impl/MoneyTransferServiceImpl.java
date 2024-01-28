@@ -2,6 +2,7 @@ package orr.service.Impl;
 
 import com.google.inject.Inject;
 import orr.dao.impl.MoneyTransferDaoImpl;
+import orr.exception.MoneyTransferException;
 import orr.models.MoneyTransfer;
 import orr.service.MoneyTransferService;
 
@@ -24,12 +25,16 @@ public class MoneyTransferServiceImpl implements MoneyTransferService {
 
     @Override
     public Optional<MoneyTransfer> findById(Long id) {
-        return moneyTransferDao.findById(id);
+        return Optional.ofNullable(moneyTransferDao.findById(id).orElseThrow(() -> new MoneyTransferException(id)));
     }
 
     @Override
     public MoneyTransfer getById(Long id) {
-        return moneyTransferDao.getById(id);
+        try {
+            return moneyTransferDao.getById(id);
+        } catch (Exception exception){
+            throw new MoneyTransferException(id);
+        }
     }
 
     @Override

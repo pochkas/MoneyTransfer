@@ -56,7 +56,6 @@ public class GuiceModule extends AbstractModule {
 
     public Properties getProperties() throws IOException {
         String rootPath = Thread.currentThread().getContextClassLoader().getResource("secret.properties").getPath();
-
         Properties properties = new Properties();
         properties.load(new FileInputStream(rootPath));
         return properties;

@@ -23,32 +23,19 @@ public class UserController {
 
         get("/users/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            Optional<User> user = userService.findById(id);
-            if (user.isPresent()) {
-                return user.get();
-            }
-            res.status(400);
-            return new ResponseError("No user with id '%s' found", String.valueOf(id));
+            return userService.getById(id);
         }, json());
 
         post("/users", (req, res) -> {
             String request = "" + req.body();
             Gson gson = new GsonBuilder().create();
             User user = gson.fromJson(request, User.class);
-            User newUser = userService.add(user);
-            if (user != null) {
-                return newUser;
-            }
-            return new ResponseError("No user created");
+            return userService.add(user);
         }, json());
 
         put("/users/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            Optional<User> user = userService.findById(id);
-            if (user.isPresent()) {
-                res.status(400);
-                return new ResponseError("No user with id '%s' found", String.valueOf(id));
-            }
+            userService.findById(id);
             String request = "" + req.body();
             Gson gson = new GsonBuilder().create();
             UserDto userDto = gson.fromJson(request, UserDto.class);
@@ -57,21 +44,12 @@ public class UserController {
 
         get("/users/:username", (req, res) -> {
             String username = req.params(":username");
-            User user = userService.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
-            if (user != null) {
-                return user;
-            }
-            res.status(400);
-            return new ResponseError("No user with username '%s' found", username);
+            return userService.findUserByUsername(username).get();
         }, json());
 
         delete("/users/:id", (req, res) -> {
-            Long id = Long.valueOf(req.params(":id"));Optional<User> user = userService.findById(id);
-            if (user.isPresent()) {
-                return new ResponseError("No user with id '%s' found", String.valueOf(id));
-            }
+            Long id = Long.valueOf(req.params(":id"));
             userService.delete(id);
-            res.status(200);
             return "User was deleted.";
         }, json());
 

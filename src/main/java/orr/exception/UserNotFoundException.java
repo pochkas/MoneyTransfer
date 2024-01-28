@@ -1,8 +1,8 @@
 package orr.exception;
 
-public class UserNotFoundException extends RuntimeException{
+public class UserNotFoundException extends UserFacingException{
 
-    public UserNotFoundException() {
-        super("User was not found.");
+    public UserNotFoundException(Long id) {
+        super("No user with with id " + id + " found.");
     }
 }

@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getById(Long id) {
-        return findById(id).orElseThrow(UserNotFoundException::new);
+        return findById(id).orElseThrow(()->new UserNotFoundException(id));
     }
 
     @Override
