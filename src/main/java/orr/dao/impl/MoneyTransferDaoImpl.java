@@ -36,7 +36,7 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
 
     @Override
     public MoneyTransfer getById(Long id) {
-        return findById(id).get();
+        return findById(id).orElseThrow(()-> new MoneyTransferException(id));
     }
 
     @Override

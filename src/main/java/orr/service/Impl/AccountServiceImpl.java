@@ -26,16 +26,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Optional<Account> findById(Long id) {
-        return Optional.ofNullable(accountDao.findById(id).orElseThrow(()-> new AccountNotFoundException(id)));
+        return accountDao.findById(id);
     }
 
     @Override
     public Account getById(Long id) {
-        try{
-            return accountDao.getById(id);
-        } catch (Exception exception){
-            throw new AccountNotFoundException(id);
-        }
+        return accountDao.getById(id);
     }
 
     @Override
@@ -45,10 +41,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void delete(Long id) {
-
         try {
             accountDao.delete(id);
-        } catch (Exception exception){
+        } catch (Exception exception) {
             throw new AccountNotFoundException(id);
         }
     }
@@ -60,15 +55,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Optional<Account> findByAccountNumber(Long accountNumberId) {
-        try {
-            return accountDao.findByAccountNumber(accountNumberId);
-        } catch (Exception exception){
-            throw new AccountNotFoundException(accountNumberId);
-        }
+        return accountDao.findByAccountNumber(accountNumberId);
     }
 
     @Override
     public Account getByAccountNumber(Long accountNumberId) {
-        return accountDao.findByAccountNumber(accountNumberId).get();
+        return accountDao.getByAccountNumber(accountNumberId);
     }
 }

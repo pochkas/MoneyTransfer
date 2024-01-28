@@ -26,16 +26,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.ofNullable(userDao.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
+        return userDao.findById(id);
     }
 
     @Override
     public User getById(Long id) {
-        try {
             return userDao.getById(id);
-        } catch (Exception exception){
-            throw new UserNotFoundException(id);
-        }
     }
 
     @Override
@@ -59,6 +55,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findUserByUsername(String username) {
-        return findUserByUsername(username);
+        return userDao.findUserByUsername(username);
     }
 }

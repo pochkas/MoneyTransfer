@@ -30,11 +30,7 @@ public class MoneyTransferServiceImpl implements MoneyTransferService {
 
     @Override
     public MoneyTransfer getById(Long id) {
-        try {
             return moneyTransferDao.getById(id);
-        } catch (Exception exception){
-            throw new MoneyTransferException(id);
-        }
     }
 
     @Override
