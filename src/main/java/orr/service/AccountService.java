@@ -13,7 +13,7 @@ public interface AccountService {
     Account getById(Long id);
     Account update(Long id, AccountDto accountDto);
     void delete(Long id);
-    Account add(Long userId, Account account);
+    Long add(Long userId, AccountDto accountDto);
     Optional<Account> findByAccountNumber(Long accountNumberId);
     Account getByAccountNumber(Long accountNumberId);
 }

@@ -23,11 +23,7 @@ public class MoneyTransferController {
             Long fromAccountNumber = Long.valueOf(req.queryParams("fromAccountNumber"));
             Long toAccountNumber = Long.valueOf(req.queryParams("toAccountNumber"));
             double amount = Double.parseDouble(req.queryParams("amount"));
-            res.status(200);
-
-            moneyTransferService.performTransaction(fromAccountNumber, toAccountNumber, amount);
-
-            return "-"+amount;
+            return moneyTransferService.performTransaction(fromAccountNumber, toAccountNumber, amount);
         }, json());
 
         get("/moneyTransfers", (req, res) -> moneyTransferService.getAll(), json());

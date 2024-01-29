@@ -54,10 +54,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User add(User user) {
-        context.insertInto(USER, USER.FIRSTNAME, USER.LASTNAME, USER.EMAIL, USER.USERNAME, USER.PASSWORD)
-                .values(user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword()).execute();
-        return user;
+    public Long add(User user) {
+        User newUser = context.insertInto(USER, USER.FIRSTNAME, USER.LASTNAME, USER.EMAIL, USER.USERNAME, USER.PASSWORD)
+                .values(user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword()).returning(USER.ID).fetchOneInto(User.class);
+        return newUser.getId();
     }
 
     @Override

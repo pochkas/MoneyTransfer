@@ -6,6 +6,7 @@ import orr.dao.AccountDao;
 import orr.dto.AccountDto;
 import orr.exception.AccountNotFoundException;
 import orr.models.Account;
+import orr.utils.UUIDSupplier;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -16,10 +17,12 @@ import static generated.tables.Account.ACCOUNT;
 public class AccountDaoImpl implements AccountDao {
 
     private final DSLContext context;
+    private final UUIDSupplier uuidSupplier;
 
     @Inject
-    public AccountDaoImpl(DSLContext context) {
+    public AccountDaoImpl(DSLContext context, UUIDSupplier uuidSupplier) {
         this.context = context;
+        this.uuidSupplier=uuidSupplier;
     }
 
     @Override
@@ -61,11 +64,11 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Account add(Long userId, Account account) {
-        long uniqueLong = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
-        context.insertInto(ACCOUNT, ACCOUNT.ACCOUNTNUMBER, ACCOUNT.BALANCE, ACCOUNT.USERID)
-                .values(uniqueLong, account.getBalance(), userId).execute();
-        return account;
+    public Long add(Long userId, AccountDto accountDto) {
+        long uniqueLong = uuidSupplier.create().getMostSignificantBits() & Long.MAX_VALUE;
+        Account account = context.insertInto(ACCOUNT, ACCOUNT.ACCOUNTNUMBER, ACCOUNT.BALANCE, ACCOUNT.USERID)
+                .values(uniqueLong, accountDto.getBalance(), userId).returning(ACCOUNT.ID).fetchOneInto(Account.class);
+        return account.getId();
     }
 
     @Override

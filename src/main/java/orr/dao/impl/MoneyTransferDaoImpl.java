@@ -40,10 +40,10 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
     }
 
     @Override
-    public MoneyTransfer add(MoneyTransfer moneyTransfer) {
-        context.insertInto(MONEYTRANSFER, MONEYTRANSFER.FROMACCOUNTNUMBER, MONEYTRANSFER.TOACCOUNTNUMBER, MONEYTRANSFER.AMOUNT)
-                .values(moneyTransfer.getFromAccountNumber(), moneyTransfer.getToAccountNumber(), moneyTransfer.getAmount()).execute();
-        return moneyTransfer;
+    public Long add(MoneyTransfer moneyTransfer) {
+        MoneyTransfer newMoneyTransfer = context.insertInto(MONEYTRANSFER, MONEYTRANSFER.FROMACCOUNTNUMBER, MONEYTRANSFER.TOACCOUNTNUMBER, MONEYTRANSFER.AMOUNT)
+                .values(moneyTransfer.getFromAccountNumber(), moneyTransfer.getToAccountNumber(), moneyTransfer.getAmount()).returning(MONEYTRANSFER.ID).fetchOneInto(MoneyTransfer.class);
+        return newMoneyTransfer.getId();
     }
 
     @Override

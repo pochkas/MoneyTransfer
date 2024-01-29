@@ -11,6 +11,9 @@ import org.jooq.SQLDialectCategory;
 import org.jooq.impl.*;
 import org.postgresql.ds.PGSimpleDataSource;
 import orr.MoneyTransferApplication;
+import orr.utils.UUIDSupplier;
+import orr.utils.UUIDSupplierImpl;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -50,7 +53,7 @@ public class GuiceModule extends AbstractModule {
                 .set(SQLDialectCategory.POSTGRES.dialects().stream().findFirst().get())
                 .set(cp)
                 .set(new ThreadLocalTransactionProvider(cp, true));
-       SQLDialectCategory.POSTGRES.dialects().stream().findFirst().get();
+        SQLDialectCategory.POSTGRES.dialects().stream().findFirst().get();
         return configuration;
     }
 
@@ -59,5 +62,10 @@ public class GuiceModule extends AbstractModule {
         Properties properties = new Properties();
         properties.load(new FileInputStream(rootPath));
         return properties;
+    }
+    @Provides
+    @Singleton
+    public UUIDSupplier getUUIDSupplier(){
+        return new UUIDSupplierImpl();
     }
 }

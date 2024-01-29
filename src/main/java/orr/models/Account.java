@@ -1,5 +1,7 @@
 package orr.models;
 
+import java.util.Objects;
+
 public class Account {
     private Long id;
     private Long accountNumber;
@@ -49,5 +51,18 @@ public class Account {
                 ", balance=" + balance +
                 ", userId=" + userId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Double.compare(account.balance, balance) == 0 && Objects.equals(id, account.id) && Objects.equals(accountNumber, account.accountNumber) && Objects.equals(userId, account.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, accountNumber, balance, userId);
     }
 }

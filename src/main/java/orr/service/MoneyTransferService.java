@@ -10,6 +10,6 @@ public interface MoneyTransferService {
     Collection<MoneyTransfer> getAll();
     Optional<MoneyTransfer> findById(Long id);
     MoneyTransfer getById(Long id);
-    MoneyTransfer add(MoneyTransfer moneyTransfer);
+    Long add(MoneyTransfer moneyTransfer);
     MoneyTransfer performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount);
 }

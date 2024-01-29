@@ -34,7 +34,7 @@ public class MoneyTransferServiceImpl implements MoneyTransferService {
     }
 
     @Override
-    public MoneyTransfer add(MoneyTransfer moneyTransfer) {
+    public Long add(MoneyTransfer moneyTransfer) {
         return moneyTransferDao.add(moneyTransfer);
     }
 

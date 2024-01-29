@@ -19,7 +19,7 @@ public interface UserService {
 
     void delete(Long id);
 
-    User add(User user);
+    Long add(User user);
 
     Optional<User> findUserByUsername(String username);
 }

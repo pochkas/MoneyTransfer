@@ -15,5 +15,5 @@ public interface AccountDao {
     Account getByAccountNumber(Long accountNumber);
     Account update(Long id, AccountDto accountDto);
     void delete(Long id);
-    Account add(Long userId, Account account);
+    Long add(Long userId, AccountDto accountDto);
 }

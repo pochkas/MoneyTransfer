@@ -35,13 +35,8 @@ public class AccountController {
             Long userId = Long.valueOf(req.params(":userId"));
             String request = "" + req.body();
             Gson gson = new GsonBuilder().create();
-            Account account = gson.fromJson(request, Account.class);
-
-            Account newAccount = accountService.add(userId, account);
-            if (account != null) {
-                return newAccount;
-            }
-            return new ResponseError("No user created");
+            AccountDto account = gson.fromJson(request, AccountDto.class);
+            return accountService.add(userId, account);
         }, json());
 
         put("/accounts/:id", (req, res) -> {
