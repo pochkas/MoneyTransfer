@@ -6,10 +6,9 @@ import com.google.inject.Inject;
 import orr.dto.AccountDto;
 import orr.errors.ResponseError;
 import orr.exception.UserFacingException;
-import orr.models.Account;
-import orr.service.Impl.AccountServiceImpl;
 
-import java.util.Optional;
+import orr.service.AccountService;
+
 
 import static orr.utils.JsonUtil.json;
 import static orr.utils.JsonUtil.toJson;
@@ -17,7 +16,7 @@ import static spark.Spark.*;
 
 public class AccountController {
     @Inject
-    public AccountController(final AccountServiceImpl accountService) {
+    public AccountController(final AccountService accountService) {
 
         get("/accounts", (req, res) -> accountService.getAll(), json());
 

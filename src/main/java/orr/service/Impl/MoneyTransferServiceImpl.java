@@ -39,7 +39,7 @@ public class MoneyTransferServiceImpl implements MoneyTransferService {
     }
 
     @Override
-    public MoneyTransfer performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount) {
-       return moneyTransferDao.performTransaction(fromAccountNumber, toAccountNumber, amount);
+    public void performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount) {
+       moneyTransferDao.performTransaction(fromAccountNumber, toAccountNumber, amount);
     }
 }

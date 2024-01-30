@@ -2,13 +2,8 @@ package orr.controller;
 
 import com.google.inject.Inject;
 import orr.errors.ResponseError;
-import orr.exception.MoneyTransferException;
 import orr.exception.UserFacingException;
-import orr.models.MoneyTransfer;
-import orr.service.Impl.MoneyTransferServiceImpl;
 import orr.service.MoneyTransferService;
-
-import java.util.Optional;
 
 import static orr.utils.JsonUtil.json;
 import static orr.utils.JsonUtil.toJson;
@@ -17,13 +12,14 @@ import static spark.Spark.exception;
 
 public class MoneyTransferController {
     @Inject
-    public MoneyTransferController(final MoneyTransferServiceImpl moneyTransferService) {
+    public MoneyTransferController(final MoneyTransferService moneyTransferService) {
 
         post("/moneyTransfer", (req, res) -> {
             Long fromAccountNumber = Long.valueOf(req.queryParams("fromAccountNumber"));
             Long toAccountNumber = Long.valueOf(req.queryParams("toAccountNumber"));
             double amount = Double.parseDouble(req.queryParams("amount"));
-            return moneyTransferService.performTransaction(fromAccountNumber, toAccountNumber, amount);
+            moneyTransferService.performTransaction(fromAccountNumber, toAccountNumber, amount);
+            return "ok";
         }, json());
 
         get("/moneyTransfers", (req, res) -> moneyTransferService.getAll(), json());

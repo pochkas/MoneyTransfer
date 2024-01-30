@@ -1,5 +1,7 @@
 package orr.models;
 
+import java.util.Objects;
+
 public class MoneyTransfer {
 
     private Long id;
@@ -50,5 +52,28 @@ public class MoneyTransfer {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MoneyTransfer that = (MoneyTransfer) o;
+        return Double.compare(that.amount, amount) == 0 && Objects.equals(id, that.id) && Objects.equals(fromAccountNumber, that.fromAccountNumber) && Objects.equals(toAccountNumber, that.toAccountNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fromAccountNumber, toAccountNumber, amount);
+    }
+
+    @Override
+    public String toString() {
+        return "MoneyTransfer{" +
+                "id=" + id +
+                ", fromAccountNumber=" + fromAccountNumber +
+                ", toAccountNumber=" + toAccountNumber +
+                ", amount=" + amount +
+                '}';
     }
 }

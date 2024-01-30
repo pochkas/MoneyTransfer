@@ -47,7 +47,7 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
     }
 
     @Override
-    public MoneyTransfer performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount) {
+    public void performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount) {
 
         Account accountFrom = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(fromAccountNumber)).fetchOneInto(Account.class);
         Account accountTo = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(toAccountNumber)).fetchOneInto(Account.class);
@@ -72,6 +72,5 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
         } catch (Exception exception) {
             throw new InsufficientFundsException();
         }
-        return moneyTransfer;
     }
 }

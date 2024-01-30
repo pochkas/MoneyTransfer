@@ -5,11 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import orr.dto.UserDto;
 import orr.errors.ResponseError;
-import orr.exception.UserNotFoundException;
 import orr.models.User;
-import orr.service.Impl.UserServiceImpl;
-
-import java.util.Optional;
+import orr.service.UserService;
 
 import static orr.utils.JsonUtil.json;
 import static orr.utils.JsonUtil.toJson;
@@ -17,7 +14,7 @@ import static spark.Spark.*;
 
 public class UserController {
     @Inject
-    public UserController(final UserServiceImpl userService) {
+    public UserController(final UserService userService) {
 
         get("/users", (req, res) -> userService.getAll(), json());
 
@@ -35,8 +32,7 @@ public class UserController {
 
         put("/users/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            userService.findById(id);
-            String request = "" + req.body();
+            String request = req.body();
             Gson gson = new GsonBuilder().create();
             UserDto userDto = gson.fromJson(request, UserDto.class);
             return userService.update(id, userDto);

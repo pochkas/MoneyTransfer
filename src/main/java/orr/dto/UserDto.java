@@ -1,5 +1,7 @@
 package orr.dto;
 
+import java.util.Objects;
+
 public class UserDto {
 
     private String username;
@@ -54,5 +56,18 @@ public class UserDto {
                 ", lastName=" + lastName +
                 ", email=" + email +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(username, userDto.username) && Objects.equals(firstName, userDto.firstName) && Objects.equals(lastName, userDto.lastName) && Objects.equals(email, userDto.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, firstName, lastName, email);
     }
 }

@@ -1,11 +1,13 @@
 package orr.service;
 
+import com.google.inject.ImplementedBy;
 import orr.dto.AccountDto;
 import orr.models.Account;
+import orr.service.Impl.AccountServiceImpl;
 
 import java.util.Collection;
 import java.util.Optional;
-
+@ImplementedBy(AccountServiceImpl.class)
 public interface AccountService {
 
     Collection<Account> getAll();

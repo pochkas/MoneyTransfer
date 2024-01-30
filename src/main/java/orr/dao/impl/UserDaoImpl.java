@@ -1,6 +1,7 @@
 package orr.dao.impl;
 
 import com.google.inject.Inject;
+import com.google.inject.Provides;
 import org.jooq.DSLContext;
 import orr.dao.UserDao;
 import orr.dto.UserDto;

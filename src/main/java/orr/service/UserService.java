@@ -1,12 +1,15 @@
 package orr.service;
 
 
+import com.google.inject.ImplementedBy;
 import orr.dto.UserDto;
 import orr.models.User;
+import orr.service.Impl.MoneyTransferServiceImpl;
+import orr.service.Impl.UserServiceImpl;
 
 import java.util.Collection;
 import java.util.Optional;
-
+@ImplementedBy(UserServiceImpl.class)
 public interface UserService {
 
     Collection<User> getAll();
