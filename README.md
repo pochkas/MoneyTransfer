@@ -1,6 +1,6 @@
 # MoneyTransfer
 
-A Java RESTful API for money transfers between users accounts
+A Java RESTful API for money transfers between users accounts. Has integration tests for services and unit tests for controller layer.
 
 ## Technologies
 
