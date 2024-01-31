@@ -40,7 +40,6 @@ public class AccountController {
 
         put("/accounts/:id", (req, res) -> {
             Long id = Long.valueOf(req.params(":id"));
-            accountService.findById(id);
             String request = "" + req.body();
             Gson gson = new GsonBuilder().create();
             AccountDto accountDto = gson.fromJson(request, AccountDto.class);

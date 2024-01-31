@@ -19,6 +19,7 @@ import java.util.Collections;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
+
 public class UserControllerTest {
 
     static UserService service = EasyMock.createMock(UserService.class);

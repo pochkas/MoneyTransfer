@@ -23,6 +23,7 @@ import orr.dto.AccountDto;
 import orr.exception.AccountNotFoundException;
 import orr.exception.InsufficientFundsException;
 import orr.exception.MoneyTransferException;
+import orr.exception.MoneyTransferSameAccountException;
 import orr.models.Account;
 import orr.models.User;
 import orr.service.AccountService;
@@ -110,5 +111,9 @@ public class MoneyTransferServiceImplTest extends PostgreSQLContainerAbstract {
         Exception exception = assertThrows(InsufficientFundsException.class, () ->
                 moneyTransferService.performTransaction(accountNumber, accountNumber2, amount + balance));
         assertEquals("Insufficient Funds.", exception.getMessage());
+
+        Exception exception2 = assertThrows(MoneyTransferSameAccountException.class, () ->
+                moneyTransferService.performTransaction(accountNumber, accountNumber, amount + balance));
+        assertEquals("You can not transfer funds to the same account.", exception2.getMessage());
     }
 }

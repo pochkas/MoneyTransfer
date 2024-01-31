@@ -5,6 +5,7 @@ import org.jooq.DSLContext;
 import orr.dao.MoneyTransferDao;
 import orr.exception.InsufficientFundsException;
 import orr.exception.MoneyTransferException;
+import orr.exception.MoneyTransferSameAccountException;
 import orr.models.Account;
 import orr.models.MoneyTransfer;
 
@@ -51,20 +52,22 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
 
         Account accountFrom = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(fromAccountNumber)).fetchOneInto(Account.class);
         Account accountTo = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(toAccountNumber)).fetchOneInto(Account.class);
-
+        if(fromAccountNumber.equals(toAccountNumber)){
+            throw new MoneyTransferSameAccountException();
+        }
         MoneyTransfer moneyTransfer = new MoneyTransfer(fromAccountNumber, toAccountNumber, amount);
         try {
             context.transaction(transaction -> {
 
                 transaction.dsl()
                         .update(ACCOUNT)
-                        .set(ACCOUNT.BALANCE, accountFrom.getBalance() - amount)
+                        .set(ACCOUNT.BALANCE, ACCOUNT.BALANCE.minus(amount))
                         .where(ACCOUNT.ACCOUNTNUMBER.eq(fromAccountNumber))
                         .execute();
 
                 transaction.dsl()
                         .update(ACCOUNT)
-                        .set(ACCOUNT.BALANCE, accountTo.getBalance() + amount)
+                        .set(ACCOUNT.BALANCE, ACCOUNT.BALANCE.plus(amount))
                         .where(ACCOUNT.ACCOUNTNUMBER.eq(toAccountNumber))
                         .execute();
             });

@@ -1,5 +1,7 @@
 package orr.dto;
 
+import java.util.Objects;
+
 public class AccountDto {
     private String accountHolderName;
     private double balance;
@@ -31,5 +33,18 @@ public class AccountDto {
                 "accountHolderName='" + accountHolderName + '\'' +
                 ", balance=" + balance +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountDto that = (AccountDto) o;
+        return Double.compare(that.balance, balance) == 0 && Objects.equals(accountHolderName, that.accountHolderName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountHolderName, balance);
     }
 }
