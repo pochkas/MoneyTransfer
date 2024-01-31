@@ -2,7 +2,7 @@
 
 A Java RESTful API for money transfers between users accounts
 
-##Technologies
+## Technologies
 
 * SparkJava
 * Jooq
@@ -12,7 +12,7 @@ A Java RESTful API for money transfers between users accounts
 * Guice
 * Mockito
 
-##Available Services
+## Available Services
 
 | HTTP METHOD   | PATH                       | USAGE          |
 | ------------- | -------------------------- | --------------:|
@@ -32,13 +32,13 @@ A Java RESTful API for money transfers between users accounts
 | DELETE        | /accounts/:id              | remove account by id |
 | DELETE        | /users/:id                 | remove user by id |
 
-##Http Status
+## Http Status
 * 200 OK: The request has succeeded
 * 400 Bad Request: The request could not be understood by the server
 * 404 Not Found: The requested resource cannot be found
 * 500 Internal Server Error: The server encountered an unexpected condition
 
-##Sample JSON for User and Account
+## Sample JSON for User and Account
 
 Create a new User
 ```javascript
