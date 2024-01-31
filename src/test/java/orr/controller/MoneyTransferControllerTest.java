@@ -5,10 +5,15 @@ import com.google.gson.GsonBuilder;
 import org.easymock.EasyMock;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import orr.dto.AccountDto;
+import orr.dto.MoneyTransferDto;
 import orr.models.MoneyTransfer;
 import orr.service.MoneyTransferService;
 import spark.Spark;
 import spark.servlet.SparkApplication;
+
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Collections;
@@ -65,7 +70,9 @@ public class MoneyTransferControllerTest {
     @Test
     public void performTransactionTest() throws Exception {
         reset(service);
-        service.performTransaction(eq(4343322889283454872L), eq(5343322889283454872L),  eq(1000.0));
+        Gson gson = new GsonBuilder().create();
+        MoneyTransferDto moneyTransferDto = new MoneyTransferDto(4343322889283454872L, 5343322889283454872L, 1000.0);
+        service.performTransaction(eq(moneyTransferDto));
 
         EasyMock.expectLastCall().anyTimes();
 
@@ -73,6 +80,15 @@ public class MoneyTransferControllerTest {
         URL uri = new URL("http://localhost:4567/moneyTransfer?fromAccountNumber=4343322889283454872&toAccountNumber=5343322889283454872&amount=1000");
         HttpURLConnection con = (HttpURLConnection) uri.openConnection();
         con.setRequestMethod("POST");
+        con.setDoOutput(true);
+
+        OutputStream os = con.getOutputStream();
+        OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
+        String moneyTransferDtoStr = gson.toJson(moneyTransferDto, MoneyTransferDto.class);
+        osw.write(moneyTransferDtoStr);
+        osw.flush();
+        osw.close();
+        os.close();
         assertEquals("\"ok\"", new String(con.getInputStream().readAllBytes()));
     }
 }

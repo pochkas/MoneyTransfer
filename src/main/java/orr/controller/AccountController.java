@@ -32,7 +32,7 @@ public class AccountController {
 
         post("/accounts/:userId", (req, res) -> {
             Long userId = Long.valueOf(req.params(":userId"));
-            String request = "" + req.body();
+            String request = req.body();
             Gson gson = new GsonBuilder().create();
             AccountDto account = gson.fromJson(request, AccountDto.class);
             return accountService.add(userId, account);

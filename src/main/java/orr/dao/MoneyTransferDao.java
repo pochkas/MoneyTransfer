@@ -1,5 +1,6 @@
 package orr.dao;
 
+import orr.dto.MoneyTransferDto;
 import orr.models.MoneyTransfer;
 
 import java.util.Collection;
@@ -10,5 +11,5 @@ public interface MoneyTransferDao {
     Optional<MoneyTransfer> findById(Long id);
     MoneyTransfer getById(Long id);
     Long add(MoneyTransfer moneyTransfer);
-    void performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount);
+    void performTransaction(MoneyTransferDto moneyTransferDto);
 }

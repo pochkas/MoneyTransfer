@@ -24,7 +24,7 @@ public class UserController {
         }, json());
 
         post("/users", (req, res) -> {
-            String request = "" + req.body();
+            String request = req.body();
             Gson gson = new GsonBuilder().create();
             User user = gson.fromJson(request, User.class);
             return userService.add(user);

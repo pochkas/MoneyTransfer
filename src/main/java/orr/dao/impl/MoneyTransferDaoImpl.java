@@ -3,6 +3,7 @@ package orr.dao.impl;
 import com.google.inject.Inject;
 import org.jooq.DSLContext;
 import orr.dao.MoneyTransferDao;
+import orr.dto.MoneyTransferDto;
 import orr.exception.InsufficientFundsException;
 import orr.exception.MoneyTransferException;
 import orr.exception.MoneyTransferSameAccountException;
@@ -48,30 +49,33 @@ public class MoneyTransferDaoImpl implements MoneyTransferDao {
     }
 
     @Override
-    public void performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount) {
+    public void performTransaction(MoneyTransferDto moneyTransferDto) {
 
-        Account accountFrom = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(fromAccountNumber)).fetchOneInto(Account.class);
-        Account accountTo = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(toAccountNumber)).fetchOneInto(Account.class);
-        if(fromAccountNumber.equals(toAccountNumber)){
+        Account accountFrom = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(moneyTransferDto.getFromAccountNumber())).fetchOneInto(Account.class);
+        Account accountTo = context.select().from(ACCOUNT).where(ACCOUNT.ACCOUNTNUMBER.eq(moneyTransferDto.getToAccountNumber())).fetchOneInto(Account.class);
+        if(moneyTransferDto.getFromAccountNumber().equals(moneyTransferDto.getToAccountNumber())){
             throw new MoneyTransferSameAccountException();
         }
-        MoneyTransfer moneyTransfer = new MoneyTransfer(fromAccountNumber, toAccountNumber, amount);
+
         try {
             context.transaction(transaction -> {
 
                 transaction.dsl()
                         .update(ACCOUNT)
-                        .set(ACCOUNT.BALANCE, ACCOUNT.BALANCE.minus(amount))
-                        .where(ACCOUNT.ACCOUNTNUMBER.eq(fromAccountNumber))
+                        .set(ACCOUNT.BALANCE, ACCOUNT.BALANCE.minus(moneyTransferDto.getAmount()))
+                        .where(ACCOUNT.ACCOUNTNUMBER.eq(moneyTransferDto.getFromAccountNumber()))
                         .execute();
 
                 transaction.dsl()
                         .update(ACCOUNT)
-                        .set(ACCOUNT.BALANCE, ACCOUNT.BALANCE.plus(amount))
-                        .where(ACCOUNT.ACCOUNTNUMBER.eq(toAccountNumber))
+                        .set(ACCOUNT.BALANCE, ACCOUNT.BALANCE.plus(moneyTransferDto.getAmount()))
+                        .where(ACCOUNT.ACCOUNTNUMBER.eq(moneyTransferDto.getToAccountNumber()))
                         .execute();
+
+                transaction.dsl()
+                        .insertInto(MONEYTRANSFER, MONEYTRANSFER.FROMACCOUNTNUMBER, MONEYTRANSFER.TOACCOUNTNUMBER, MONEYTRANSFER.AMOUNT)
+                        .values(moneyTransferDto.getFromAccountNumber(), moneyTransferDto.getToAccountNumber(), moneyTransferDto.getAmount()).returning(MONEYTRANSFER.ID).fetchOneInto(MoneyTransfer.class);
             });
-            add(moneyTransfer);
         } catch (Exception exception) {
             throw new InsufficientFundsException();
         }

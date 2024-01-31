@@ -7,6 +7,7 @@ import orr.dao.impl.AccountDaoImpl;
 import orr.dao.impl.MoneyTransferDaoImpl;
 import orr.dao.impl.UserDaoImpl;
 import orr.dto.AccountDto;
+import orr.dto.MoneyTransferDto;
 import orr.exception.InsufficientFundsException;
 import orr.exception.MoneyTransferSameAccountException;
 import orr.models.Account;
@@ -89,17 +90,19 @@ public class MoneyTransferServiceImplTest extends PostgreSQLContainerAbstract {
 
         Double amount = 1000.0;
 
-        moneyTransferService.performTransaction(accountNumber, accountNumber2, amount);
+        MoneyTransferDto moneyTransferDto = new MoneyTransferDto(accountNumber, accountNumber2, amount);
+
+        moneyTransferService.performTransaction(moneyTransferDto);
 
         assertEquals(accountService.getById(account.getId()).getBalance(), balance - amount, 0);
         assertEquals(accountService2.getById(account2.getId()).getBalance(), balance2 + amount, 0);
 
         Exception exception = assertThrows(InsufficientFundsException.class, () ->
-                moneyTransferService.performTransaction(accountNumber, accountNumber2, amount + balance));
+                moneyTransferService.performTransaction(moneyTransferDto));
         assertEquals("Insufficient Funds.", exception.getMessage());
 
         Exception exception2 = assertThrows(MoneyTransferSameAccountException.class, () ->
-                moneyTransferService.performTransaction(accountNumber, accountNumber, amount + balance));
+                moneyTransferService.performTransaction(new MoneyTransferDto(accountNumber, accountNumber, amount + balance)));
         assertEquals("You can not transfer funds to the same account.", exception2.getMessage());
     }
 }

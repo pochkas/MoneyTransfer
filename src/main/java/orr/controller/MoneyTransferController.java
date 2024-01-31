@@ -1,6 +1,10 @@
 package orr.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
+import orr.dto.AccountDto;
+import orr.dto.MoneyTransferDto;
 import orr.errors.ResponseError;
 import orr.exception.UserFacingException;
 import orr.service.MoneyTransferService;
@@ -15,10 +19,10 @@ public class MoneyTransferController {
     public MoneyTransferController(final MoneyTransferService moneyTransferService) {
 
         post("/moneyTransfer", (req, res) -> {
-            Long fromAccountNumber = Long.valueOf(req.queryParams("fromAccountNumber"));
-            Long toAccountNumber = Long.valueOf(req.queryParams("toAccountNumber"));
-            double amount = Double.parseDouble(req.queryParams("amount"));
-            moneyTransferService.performTransaction(fromAccountNumber, toAccountNumber, amount);
+            String request = req.body();
+            Gson gson = new GsonBuilder().create();
+            MoneyTransferDto moneyTransferDto = gson.fromJson(request, MoneyTransferDto.class);
+            moneyTransferService.performTransaction(moneyTransferDto);
             return "ok";
         }, json());
 

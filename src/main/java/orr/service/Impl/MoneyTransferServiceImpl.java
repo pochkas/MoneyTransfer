@@ -2,6 +2,7 @@ package orr.service.Impl;
 
 import com.google.inject.Inject;
 import orr.dao.impl.MoneyTransferDaoImpl;
+import orr.dto.MoneyTransferDto;
 import orr.exception.MoneyTransferException;
 import orr.models.MoneyTransfer;
 import orr.service.MoneyTransferService;
@@ -39,7 +40,7 @@ public class MoneyTransferServiceImpl implements MoneyTransferService {
     }
 
     @Override
-    public void performTransaction(Long fromAccountNumber, Long toAccountNumber, double amount) {
-       moneyTransferDao.performTransaction(fromAccountNumber, toAccountNumber, amount);
+    public void performTransaction(MoneyTransferDto moneyTransferDto) {
+       moneyTransferDao.performTransaction(moneyTransferDto);
     }
 }
