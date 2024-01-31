@@ -15,7 +15,7 @@ A Java RESTful API for money transfers between users accounts
 ##Available Services
 
 | HTTP METHOD   | PATH                       | USAGE          |
-| ------------- |:--------------------------:| --------------:|
+| ------------- | -------------------------- | --------------:|
 | GET           | /users                     | get all users  |
 | GET           | /users/:id                 | get user by id |
 | GET           | /users                     | get all users  |
