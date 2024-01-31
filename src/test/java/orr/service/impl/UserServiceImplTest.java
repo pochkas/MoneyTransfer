@@ -1,27 +1,16 @@
 package orr.service.impl;
 
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.jooq.impl.DataSourceConnectionProvider;
-import org.jooq.impl.DefaultConfiguration;
-import org.jooq.impl.ThreadLocalTransactionProvider;
-import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.jupiter.api.*;
 import org.junit.runners.MethodSorters;
-import org.postgresql.ds.PGSimpleDataSource;
-import org.testcontainers.containers.PostgreSQLContainer;
 import orr.dao.impl.UserDaoImpl;
 import orr.dto.UserDto;
 import orr.exception.UserNotFoundException;
 import orr.models.User;
 import orr.service.Impl.UserServiceImpl;
 import orr.service.UserService;
-import java.util.Collections;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

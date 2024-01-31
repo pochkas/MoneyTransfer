@@ -1,28 +1,13 @@
 package orr.service.impl;
 
-import org.jooq.Configuration;
-import org.jooq.ConnectionProvider;
-import org.jooq.DSLContext;
-import org.jooq.SQLDialectCategory;
-import org.jooq.impl.DSL;
-import org.jooq.impl.DataSourceConnectionProvider;
-import org.jooq.impl.DefaultConfiguration;
-import org.jooq.impl.ThreadLocalTransactionProvider;
-import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runners.MethodSorters;
-import org.postgresql.ds.PGSimpleDataSource;
-import org.testcontainers.containers.PostgreSQLContainer;
 import orr.dao.impl.AccountDaoImpl;
 import orr.dao.impl.MoneyTransferDaoImpl;
 import orr.dao.impl.UserDaoImpl;
 import orr.dto.AccountDto;
-import orr.exception.AccountNotFoundException;
 import orr.exception.InsufficientFundsException;
-import orr.exception.MoneyTransferException;
 import orr.exception.MoneyTransferSameAccountException;
 import orr.models.Account;
 import orr.models.User;
@@ -33,10 +18,11 @@ import orr.service.Impl.UserServiceImpl;
 import orr.service.MoneyTransferService;
 import orr.service.UserService;
 import orr.utils.UUIDSupplier;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-import java.util.*;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

@@ -1,40 +1,23 @@
 package orr.controller;
 
-import com.despegar.http.client.GetMethod;
-import com.despegar.http.client.HttpClientException;
-import com.despegar.http.client.HttpResponse;
-import com.despegar.sparkjava.test.SparkServer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.easymock.EasyMock;
 import org.junit.BeforeClass;
-import org.junit.ClassRule;
 import org.junit.Test;
-import orr.MoneyTransferApplication;
-import orr.dao.impl.AccountDaoImpl;
 import orr.dto.AccountDto;
-import orr.dto.UserDto;
 import orr.models.Account;
-import orr.models.User;
 import orr.service.AccountService;
-import orr.service.Impl.AccountServiceImpl;
-
-import orr.service.UserService;
 import spark.Spark;
 import spark.servlet.SparkApplication;
-
-
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 
 public class AccountControllerTest {
 

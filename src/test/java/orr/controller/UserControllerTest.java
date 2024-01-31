@@ -97,7 +97,7 @@ public class UserControllerTest {
         osw.write(user2);
         osw.flush();
         osw.close();
-        os.close();  //don't forget to close the OutputStream
+        os.close();
 
         User user1 = gson.fromJson(new String(con.getInputStream().readAllBytes()), User.class);
         assertEquals(user1, user);
