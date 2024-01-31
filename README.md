@@ -4,13 +4,13 @@ A Java RESTful API for money transfers between users accounts
 
 ##Technologies
 
-⋅⋅*SparkJava
-⋅⋅*Jooq
-⋅⋅*PostgreSql
-⋅⋅*Docker
-⋅⋅*TestContainers
-⋅⋅*Guice
-⋅⋅*Mockito
+* SparkJava
+* Jooq
+* PostgreSql
+* Docker
+* TestContainers
+* Guice
+* Mockito
 
 ##Available Services
 
@@ -33,10 +33,10 @@ A Java RESTful API for money transfers between users accounts
 | DELETE        | /users/:id                 | remove user by id |
 
 ##Http Status
-⋅⋅*200 OK: The request has succeeded
-⋅⋅*400 Bad Request: The request could not be understood by the server
-⋅⋅*404 Not Found: The requested resource cannot be found
-⋅⋅*500 Internal Server Error: The server encountered an unexpected condition
+* 200 OK: The request has succeeded
+* 400 Bad Request: The request could not be understood by the server
+* 404 Not Found: The requested resource cannot be found
+* 500 Internal Server Error: The server encountered an unexpected condition
 
 ##Sample JSON for User and Account
 
