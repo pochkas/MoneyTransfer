@@ -56,6 +56,6 @@ public class UserServiceImplTest extends PostgreSQLContainerAbstract{
 
         Exception exception2 = assertThrows(UserNotFoundException.class, () ->
                 service.getById(userId));
-        assertEquals("No user with id " + id + " found.", exception.getMessage());
+        assertEquals("No user with id " + id + " found.", exception2.getMessage());
   }
 }
